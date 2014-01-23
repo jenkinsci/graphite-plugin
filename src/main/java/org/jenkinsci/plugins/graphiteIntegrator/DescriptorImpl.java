@@ -29,7 +29,7 @@ public final class DescriptorImpl extends BuildStepDescriptor<Publisher> impleme
 	/**
 	 * 
 	 */
-	private final CopyOnWriteList<Server> servers = new CopyOnWriteList<>();
+	private final CopyOnWriteList<Server> servers = new CopyOnWriteList<Server>();
 
 	/**
 	 * 
