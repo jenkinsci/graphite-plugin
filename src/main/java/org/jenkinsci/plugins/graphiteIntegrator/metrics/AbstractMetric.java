@@ -41,7 +41,7 @@ public abstract class AbstractMetric {
 	 */
 	protected void sendMetric(Server server, Metric metric, String value) throws UnknownHostException,
 			IOException {
-		logger.println("Trying sending to  server : " + server.getIp() + ":" + server.getPort() + " On queue : "
+		logger.println("Trying to send metric to Graphite server : " + server.getIp() + ":" + server.getPort() + ", Metric name: " + metric.getName() +  " On queue : "
 				+ metric.getQueueName() + " With value : " + value);
 		if (server.getProtocol().equals("UDP")) {
 			logger.println("Metric " + value + " correctly sended to " + server.getIp() + ":" + server.getPort()
@@ -52,13 +52,11 @@ public abstract class AbstractMetric {
 			if (validator.isListening(server.getIp(), Integer.parseInt(server.getPort()))) {
 				graphiteLogger.logToGraphite(server.getIp(), server.getPort(), metric.getQueueName(), value.trim(), server.getProtocol());
 
-				logger.println("Metric " + value + " correctly sended to " + server.getIp() + ":" + server.getIp()
-						+ " on " + metric.getQueueName());
-
+			logger.println("Metric: " + metric.getName() + " with value: "+ value + " correctly sent to " + server.getIp() + ":" + server.getIp()
+					+ " on " + metric.getQueueName());
 			} else {
-				logger.println("Metric " + value + " failed when sended to " + server.getIp() + ":" + server.getIp()
-						+ " on " + metric.getQueueName());
-
+			logger.println("Metric: " + metric.getName() + " with value: "+ value + " failed when sent to " + server.getIp() + ":" + server.getIp()
+					+ " on " + metric.getQueueName());
 			}
 		}
 	}
