@@ -1,4 +1,4 @@
-package org.jenkinsci.plugins.graphiteIntegrator;
+ackage org.jenkinsci.plugins.graphiteIntegrator;
 
 import org.jenkinsci.plugins.graphiteIntegrator.loggers.GraphiteLogger;
 
@@ -230,18 +230,22 @@ public class GraphitePublisher extends Notifier {
                                 }
                                 coberturaMetrics.add(metric);
                         }
-                        if (metric.name.equals(MetricsEnum.FAIL_TESTS.name())) {
-                                metricSender = new FailTestsMetric(build, listener.getLogger(), graphiteLogger);
-                                metricSender.sendMetric(getServer(), metric);
-                        }
-                        if (metric.name.equals(MetricsEnum.SKIPED_TESTS.name())) {
-                                metricSender = new SkipTestsMetric(build, listener.getLogger(), graphiteLogger);
-                                metricSender.sendMetric(getServer(), metric);
-                        }
-                        if (metric.name.equals(MetricsEnum.TOTAL_TESTS.name())) {
-                                metricSender = new TotalTestsMetric(build, listener.getLogger(), graphiteLogger);
-                                metricSender.sendMetric(getServer(), metric);
-                        }
+						// If a Freestyle Build has been configured (without saving JUnit XML Results, I think) these will fail.
+						// Added simple null check in for now to be safe.
+						if (build.getTestResultAction() != null) {
+							if (metric.name.equals(MetricsEnum.FAIL_TESTS.name())) {
+									metricSender = new FailTestsMetric(build, listener.getLogger(), graphiteLogger);
+									metricSender.sendMetric(getServer(), metric);
+							}
+							if (metric.name.equals(MetricsEnum.SKIPED_TESTS.name())) {
+									metricSender = new SkipTestsMetric(build, listener.getLogger(), graphiteLogger);
+									metricSender.sendMetric(getServer(), metric);
+							}
+							if (metric.name.equals(MetricsEnum.TOTAL_TESTS.name())) {
+									metricSender = new TotalTestsMetric(build, listener.getLogger(), graphiteLogger);
+									metricSender.sendMetric(getServer(), metric);
+							}
+						}
                 }
                 if (isCoberturaListInitialized(coberturaMetrics)) {
                         metricSender = new CoberturaCodeCoverageMetric(build, listener.getLogger(), graphiteLogger);
