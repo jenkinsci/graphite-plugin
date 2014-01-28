@@ -222,7 +222,6 @@ public class GraphitePublisher extends Notifier {
                         }
                         if(metric.name.equals(MetricsEnum.BUILD_SUCCESSFUL.name())){
                                 metricSender = new BuildSuccessfulMetric(build, listener.getLogger(), graphiteLogger);
-								listener.getLogger().println("lala: " + metric.getName() + " " + metric.getFullQueueAndName() + " " + metric.getQueueName());
                                 metricSender.sendMetric(getServer(), metric);
                         }
                         if (isCoberturaMetric(metric)) {
