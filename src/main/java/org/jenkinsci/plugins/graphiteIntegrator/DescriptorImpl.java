@@ -119,7 +119,7 @@ public final class DescriptorImpl extends BuildStepDescriptor<Publisher> impleme
 	@Override
 	public boolean configure(StaplerRequest req, JSONObject formData) {
 		servers.replaceBy(req.bindParametersToList(Server.class, "serverBinding."));
-				baseQueueName = formData.optString("baseQueueName");
+		baseQueueName = formData.optString("baseQueueName", "");
 		save();
 		return true;
 	}
@@ -196,5 +196,23 @@ public String getBaseQueueName(){
 		}
 
 		return FormValidation.ok("Port is correctly configured");
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public FormValidation doCheckBaseQueueName(@QueryParameter final String value) {
+	    if(!validator.isBaseQueueNamePresent(value)){
+	        return FormValidation.ok();
+	    }
+	    
+	    if(!validator.validateBaseQueueName(value)){
+	        return FormValidation.error("Please ");
+	    }
+	    
+	    return FormValidation.ok("Base queue name is correctly Configured");
+	    
 	}
 }

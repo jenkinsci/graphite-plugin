@@ -6,6 +6,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  *
  * @author joachimrodrigues
@@ -90,6 +92,22 @@ public class GraphiteValidator {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * 
+     * @param baseQueueName
+     * @return
+     */
+    public boolean isBaseQueueNamePresent(String baseQueueName) {
+        return StringUtils.isNotBlank(baseQueueName);
+    }
+
+    public boolean validateBaseQueueName(String value) {
+        if(value.endsWith(".")){
+            return false;
+        }
+        return true;
     }
 
 }

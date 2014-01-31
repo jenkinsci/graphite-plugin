@@ -46,9 +46,9 @@
 
         </table>
       </f:repeatable>
-	  <f:entry title="${%base_graphite_queue_name}" help="${helpURL}/graphite_base_queue_name.html" field="baseQueueName" >
-        <f:textbox />
 	  </f:entry>
-    </f:entry>
+	  <f:entry title="${%base_graphite_queue_name}" help="${helpURL}/graphite_base_queue_name.html" field="baseQueueName" >
+          <f:textbox checkUrl="'${rootURL}/publisher/GraphitePublisher/checkBaseQueueName?value='+escape(this.value)" />
+      </f:entry>
   </f:section>
 </j:jelly>
