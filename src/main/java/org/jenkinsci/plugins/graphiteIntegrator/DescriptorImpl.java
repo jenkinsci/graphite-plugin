@@ -36,6 +36,9 @@ public final class DescriptorImpl extends BuildStepDescriptor<Publisher> impleme
 	 */
 	private GraphiteValidator validator = new GraphiteValidator();
 
+	
+	private String baseQueueName;
+
 	/**
 	 * The default constructor.
 	 */
@@ -116,9 +119,15 @@ public final class DescriptorImpl extends BuildStepDescriptor<Publisher> impleme
 	@Override
 	public boolean configure(StaplerRequest req, JSONObject formData) {
 		servers.replaceBy(req.bindParametersToList(Server.class, "serverBinding."));
+				baseQueueName = formData.optString("baseQueueName");
 		save();
 		return true;
 	}
+
+public String getBaseQueueName(){
+		return baseQueueName;
+	}
+
 
 	/**
 	 * @param ip

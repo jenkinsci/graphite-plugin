@@ -4,6 +4,7 @@
 package org.jenkinsci.plugins.graphiteIntegrator.metrics;
 
 import hudson.model.AbstractBuild;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -12,13 +13,16 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import net.sourceforge.cobertura.check.PackageCoverage;
 import net.sourceforge.cobertura.coveragedata.ClassData;
 import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
+
 import org.jenkinsci.plugins.graphiteIntegrator.loggers.GraphiteLogger;
 import org.jenkinsci.plugins.graphiteIntegrator.Metric;
 import org.jenkinsci.plugins.graphiteIntegrator.Server;
+
 import utils.MetricsEnum;
 
 /**
@@ -33,8 +37,8 @@ public class CoberturaCodeCoverageMetric extends AbstractMetric {
 	 * @param logger
 	 * @param graphiteLogger
 	 */
-	public CoberturaCodeCoverageMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger) {
-		super(build, logger, graphiteLogger);
+	public CoberturaCodeCoverageMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger, String baseQueueName) {
+		super(build, logger, graphiteLogger, baseQueueName);
 	}
 
 	@Override

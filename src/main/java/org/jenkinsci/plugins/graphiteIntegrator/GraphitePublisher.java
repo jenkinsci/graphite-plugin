@@ -1,4 +1,4 @@
-ackage org.jenkinsci.plugins.graphiteIntegrator;
+package org.jenkinsci.plugins.graphiteIntegrator;
 
 import org.jenkinsci.plugins.graphiteIntegrator.loggers.GraphiteLogger;
 
@@ -213,15 +213,15 @@ public class GraphitePublisher extends Notifier {
 
                 for (Metric metric : metrics) {
                         if (metric.name.equals(MetricsEnum.BUILD_DURATION.name())) {
-                                metricSender = new BuildDurationMetric(build, listener.getLogger(), graphiteLogger);
+                                metricSender = new BuildDurationMetric(build, listener.getLogger(), graphiteLogger, DESCRIPTOR.getBaseQueueName());
                                 metricSender.sendMetric(getServer(), metric);
                         }
                         if(metric.name.equals(MetricsEnum.BUILD_FAILED.name())){
-                                metricSender = new BuildFailedMetric(build, listener.getLogger(), graphiteLogger);
+                                metricSender = new BuildFailedMetric(build, listener.getLogger(), graphiteLogger, DESCRIPTOR.getBaseQueueName());
                                 metricSender.sendMetric(getServer(), metric);
                         }
                         if(metric.name.equals(MetricsEnum.BUILD_SUCCESSFUL.name())){
-                                metricSender = new BuildSuccessfulMetric(build, listener.getLogger(), graphiteLogger);
+                                metricSender = new BuildSuccessfulMetric(build, listener.getLogger(), graphiteLogger, DESCRIPTOR.getBaseQueueName());
                                 metricSender.sendMetric(getServer(), metric);
                         }
                         if (isCoberturaMetric(metric)) {
@@ -234,21 +234,21 @@ public class GraphitePublisher extends Notifier {
 						// Added simple null check in for now to be safe.
 						if (build.getTestResultAction() != null) {
 							if (metric.name.equals(MetricsEnum.FAIL_TESTS.name())) {
-									metricSender = new FailTestsMetric(build, listener.getLogger(), graphiteLogger);
+									metricSender = new FailTestsMetric(build, listener.getLogger(), graphiteLogger, DESCRIPTOR.getBaseQueueName());
 									metricSender.sendMetric(getServer(), metric);
 							}
 							if (metric.name.equals(MetricsEnum.SKIPED_TESTS.name())) {
-									metricSender = new SkipTestsMetric(build, listener.getLogger(), graphiteLogger);
+									metricSender = new SkipTestsMetric(build, listener.getLogger(), graphiteLogger, DESCRIPTOR.getBaseQueueName());
 									metricSender.sendMetric(getServer(), metric);
 							}
 							if (metric.name.equals(MetricsEnum.TOTAL_TESTS.name())) {
-									metricSender = new TotalTestsMetric(build, listener.getLogger(), graphiteLogger);
+									metricSender = new TotalTestsMetric(build, listener.getLogger(), graphiteLogger, DESCRIPTOR.getBaseQueueName());
 									metricSender.sendMetric(getServer(), metric);
 							}
 						}
                 }
                 if (isCoberturaListInitialized(coberturaMetrics)) {
-                        metricSender = new CoberturaCodeCoverageMetric(build, listener.getLogger(), graphiteLogger);
+                        metricSender = new CoberturaCodeCoverageMetric(build, listener.getLogger(), graphiteLogger, DESCRIPTOR.getBaseQueueName());
                         metricSender.sendMetric(getServer(), coberturaMetrics.toArray(new Metric[coberturaMetrics.size()]));
                 }
 
@@ -271,8 +271,7 @@ public class GraphitePublisher extends Notifier {
                 return (// metric.name.equals(MetricsEnum.COBERTURA_PACKAGE_BRANCH_COVERAGE.name())
                                 // || metric.name.equals(MetricsEnum.COBERTURA_PACKAGE_LINE_COVERAGE.name())
                                 // ||
-                metric.name.equals(MetricsEnum.COBERTURA_TOTAL_BRANCH_COVERAGE.name()) || metric.name
-                                .equals(MetricsEnum.COBERTURA_TOTAL_LINE_COVERAGE.name())
+                metric.name.equals(MetricsEnum.COBERTURA_TOTAL_BRANCH_COVERAGE.name()) || metric.name.equals(MetricsEnum.COBERTURA_TOTAL_LINE_COVERAGE.name())
 
                 );
         }

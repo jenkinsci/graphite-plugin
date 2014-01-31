@@ -19,6 +19,7 @@ public abstract class AbstractMetric {
 	protected final AbstractBuild<?, ?> build;
 	protected final PrintStream logger;
 	protected final GraphiteLogger graphiteLogger;
+	protected final String baseQueueName;
 
 	/**
 	 * 
@@ -26,10 +27,11 @@ public abstract class AbstractMetric {
 	 * @param logger
 	 * @param graphiteLogger
 	 */
-	public AbstractMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger) {
+	public AbstractMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger, String baseQueueName) {
 		this.build = build;
 		this.logger = logger;
 		this.graphiteLogger = graphiteLogger;
+		this.baseQueueName = baseQueueName;
 	}
 
 	/**
@@ -44,18 +46,17 @@ public abstract class AbstractMetric {
 		logger.println("Trying to send metric to Graphite server : " + server.getIp() + ":" + server.getPort() + ", Metric name: " + metric.getName() +  " On queue : "
 				+ metric.getQueueName() + " With value : " + value);
 		if (server.getProtocol().equals("UDP")) {
-			logger.println("Metric " + value + " correctly sended to " + server.getIp() + ":" + server.getPort()
+			logger.println("Metric: " + metric.getName() + " with value: "+ value + " correctly sent to " + server.getIp() + ":" + server.getPort()
 					+ " on " + metric.getQueueName() + "using UDP");
-			graphiteLogger.logToGraphite(server.getIp(), server.getPort(), metric.getQueueName(), value.trim(), server.getProtocol());
+			graphiteLogger.logToGraphite(server.getIp(), server.getPort(), baseQueueName + "." + metric.getFullQueueAndName(), value.trim(), server.getProtocol());
 		}
 		else if (server.getProtocol().equals("TCP")) {
 			if (validator.isListening(server.getIp(), Integer.parseInt(server.getPort()))) {
-				graphiteLogger.logToGraphite(server.getIp(), server.getPort(), metric.getQueueName(), value.trim(), server.getProtocol());
-
-			logger.println("Metric: " + metric.getName() + " with value: "+ value + " correctly sent to " + server.getIp() + ":" + server.getIp()
+				graphiteLogger.logToGraphite(server.getIp(), server.getPort(), baseQueueName + "." + metric.getFullQueueAndName(), value.trim(), server.getProtocol());
+				logger.println("Metric: " + metric.getName() + " with value: "+ value + " correctly sent to " + server.getIp() + ":" + server.getPort()
 					+ " on " + metric.getQueueName());
 			} else {
-			logger.println("Metric: " + metric.getName() + " with value: "+ value + " failed when sent to " + server.getIp() + ":" + server.getIp()
+				logger.println("Metric: " + metric.getName() + " with value: "+ value + " failed when sent to " + server.getIp() + ":" + server.getPort()
 					+ " on " + metric.getQueueName());
 			}
 		}
