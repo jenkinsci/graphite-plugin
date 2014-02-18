@@ -23,8 +23,8 @@ public class BuildSuccessfulMetric extends AbstractMetric {
      * @param logger
      * @param graphiteLogger
      */
-    public BuildSuccessfulMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger) {
-        super(build, logger, graphiteLogger);
+    public BuildSuccessfulMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger, String baseQueueName) {
+        super(build, logger, graphiteLogger, baseQueueName);
     }
 
     /**
@@ -36,13 +36,13 @@ public class BuildSuccessfulMetric extends AbstractMetric {
      */
     @Override
     public void sendMetric(Server server, Metric... metric) throws UnknownHostException, IOException {
-         
-         if(build.getResult() == Result.SUCCESS){
-             String metricToSend = String.valueOf(1);
-             sendMetric(server, metric[0], metricToSend);
-         }
-         
-         
-     }
- 
- }
+        
+        if(build.getResult().isCompleteBuild() && build.getResult() == Result.SUCCESS){
+            String metricToSend = String.valueOf(1);
+            sendMetric(server, metric[0], metricToSend);
+        }
+        
+        
+    }
+
+}
