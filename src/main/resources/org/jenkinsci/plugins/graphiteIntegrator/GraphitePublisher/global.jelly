@@ -27,9 +27,16 @@
                 checkUrl="'${rootURL}/publisher/GraphitePublisher/checkPort?value='+escape(this.value)"
            />
           </f:entry>
+          
+          <f:entry title="${%graphite_servers_adding_protocol}" field="protocol">
+    			<select name="serverBinding.protocol">
+        		<option value="UDP">UDP</option>
+        		<option value="TCP">TCP</option>
+    		</select>
+		  </f:entry>
 
           <f:validateButton title="${%test_graphite_server_connection}" progress="${%testing_graphite_server_connection}"  
-                method="testConnection" with="serverBinding.ip,serverBinding.port" />    
+                method="testConnection" with="serverBinding.ip,serverBinding.port,serverBinding.protocol" />    
           
           <f:entry title="${%delete_current_server}" >
             <div align="right">

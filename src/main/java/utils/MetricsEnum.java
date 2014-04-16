@@ -7,6 +7,8 @@ package utils;
 public enum MetricsEnum {
 
     BUILD_DURATION("Build duration"),
+    BUILD_FAILED("Build failed"),
+    BUILD_SUCCESSFUL("Build Successful"),
     TOTAL_TESTS("Total tests"),
     FAIL_TESTS("Fail tests"),
     SKIPED_TESTS("Skiped tests"),

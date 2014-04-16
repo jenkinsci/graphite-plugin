@@ -43,17 +43,23 @@ public abstract class AbstractMetric {
 			IOException {
 		logger.println("Trying sending to  server : " + server.getIp() + ":" + server.getPort() + " On queue : "
 				+ metric.getQueueName() + " With value : " + value);
+		if (server.getProtocol().equals("UDP")) {
+			logger.println("Metric " + value + " correctly sended to " + server.getIp() + ":" + server.getPort()
+					+ " on " + metric.getQueueName() + "using UDP");
+			graphiteLogger.logToGraphite(server.getIp(), server.getPort(), metric.getQueueName(), value.trim(), server.getProtocol());
+		}
+		else if (server.getProtocol().equals("TCP")) {
+			if (validator.isListening(server.getIp(), Integer.parseInt(server.getPort()))) {
+				graphiteLogger.logToGraphite(server.getIp(), server.getPort(), metric.getQueueName(), value.trim(), server.getProtocol());
 
-		if (validator.isListening(server.getIp(), Integer.parseInt(server.getPort()))) {
-			graphiteLogger.logToGraphite(server.getIp(), server.getPort(), metric.getQueueName(), value.trim());
+				logger.println("Metric " + value + " correctly sended to " + server.getIp() + ":" + server.getIp()
+						+ " on " + metric.getQueueName());
 
-			logger.println("Metric " + value + " correctly sended to " + server.getIp() + ":" + server.getIp()
-					+ " on " + metric.getQueueName());
+			} else {
+				logger.println("Metric " + value + " failed when sended to " + server.getIp() + ":" + server.getIp()
+						+ " on " + metric.getQueueName());
 
-		} else {
-			logger.println("Metric " + value + " failed when sended to " + server.getIp() + ":" + server.getIp()
-					+ " on " + metric.getQueueName());
-
+			}
 		}
 	}
 

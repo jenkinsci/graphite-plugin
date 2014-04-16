@@ -16,9 +16,19 @@ public class Server {
     String port;
     
     String description;
+    
+    String protocol;
             
 
-    public String getIp() {
+    public String getProtocol() {
+		return protocol;
+	}
+
+	public void setProtocol(String protocol) {
+		this.protocol = protocol;
+	}
+
+	public String getIp() {
         return ip;
     }
 

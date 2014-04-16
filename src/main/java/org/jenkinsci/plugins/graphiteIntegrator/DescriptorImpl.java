@@ -92,7 +92,8 @@ public final class DescriptorImpl extends BuildStepDescriptor<Publisher> impleme
 	 */
 	@Override
 	public boolean isApplicable(Class<? extends AbstractProject> jobType) {
-		return "hudson.maven.MavenModuleSet".equals(jobType.getName());
+		//return "hudson.maven.MavenModuleSet".equals(jobType.getName());
+		return true;
 	}
 
 	/*
@@ -126,13 +127,21 @@ public final class DescriptorImpl extends BuildStepDescriptor<Publisher> impleme
 	 * @return
 	 */
 	public FormValidation doTestConnection(@QueryParameter("serverBinding.ip") final String ip,
-			@QueryParameter("serverBinding.port") final String port) {
-		if (!validator.isIpPresent(ip) || !validator.isPortPresent(port)
-				|| !validator.isListening(ip, Integer.parseInt(port))) {
-			return FormValidation.error("Server is not listening... Or ip:port are not correctly filled");
+			@QueryParameter("serverBinding.port") final String port,
+			@QueryParameter("serverBinding.protocol") final String protocol) {
+		if(protocol.equals("UDP")) {
+			return FormValidation.ok("UDP is configured");
 		}
+		else if(protocol.equals("TCP")) {
+			if (!validator.isIpPresent(ip) || !validator.isPortPresent(port)
+					|| !validator.isListening(ip, Integer.parseInt(port))) {
+				return FormValidation.error("Server is not listening... Or ip:port are not correctly filled");
+			}
 
-		return FormValidation.ok("Server is listening");
+			return FormValidation.ok("Server is listening");
+		} else {
+			return FormValidation.ok("Unknown protocol");
+		}
 	}
 
 	/**
