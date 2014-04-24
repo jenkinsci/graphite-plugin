@@ -30,9 +30,9 @@
           
           <f:entry title="${%graphite_servers_adding_protocol}" field="protocol">
     			<select name="serverBinding.protocol">
-        		<option value="UDP">UDP</option>
-        		<option value="TCP">TCP</option>
-    		</select>
+        			<option value="UDP">UDP</option>
+        			<option value="TCP">TCP</option>
+        		</select>
 		  </f:entry>
 
           <f:validateButton title="${%test_graphite_server_connection}" progress="${%testing_graphite_server_connection}"  
@@ -46,6 +46,9 @@
 
         </table>
       </f:repeatable>
+	</f:entry>
+	<f:entry title="${%base_graphite_queue_name}" help="${helpURL}/graphite_base_queue_name.html" field="baseQueueName" >
+        <f:textbox checkUrl="'${rootURL}/publisher/GraphitePublisher/checkBaseQueueName?value='+escape(this.value)" />
     </f:entry>
   </f:section>
 </j:jelly>

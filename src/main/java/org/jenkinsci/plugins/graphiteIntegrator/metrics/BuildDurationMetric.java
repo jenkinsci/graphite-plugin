@@ -23,8 +23,8 @@ public class BuildDurationMetric extends AbstractMetric {
 	 * @param logger
 	 * @param graphiteLogger
 	 */
-	public BuildDurationMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger) {
-		super(build, logger, graphiteLogger);
+	public BuildDurationMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger, String baseQueueName) {
+		super(build, logger, graphiteLogger, baseQueueName);
 	}
 
 	/**

@@ -70,7 +70,7 @@ public class GraphiteLogger {
     	Socket conn = new Socket(graphiteHost, Integer.parseInt(graphitePort));
 		
         DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-        String data = queue + " " + metric + "\n";
+        String data = queue + " " + metric + " " + (System.currentTimeMillis()/1000) + "\n";
         dos.writeBytes(data);
         conn.close();
     }

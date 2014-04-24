@@ -4,6 +4,7 @@
  */
 package org.jenkinsci.plugins.graphiteIntegrator;
 
+
 /**
  *
  * @author joachimrodrigues
@@ -39,6 +40,10 @@ public class Metric {
 
     public void setQueueName(String queueName) {
         this.queueName = queueName;
+    }
+    
+	public String getFullQueueAndName(){
+    	return queueName.concat(".").concat(name);
     }
     
 }

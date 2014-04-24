@@ -29,12 +29,15 @@ public final class DescriptorImpl extends BuildStepDescriptor<Publisher> impleme
 	/**
 	 * 
 	 */
-	private final CopyOnWriteList<Server> servers = new CopyOnWriteList<>();
+	private final CopyOnWriteList<Server> servers = new CopyOnWriteList<Server>();
 
 	/**
 	 * 
 	 */
 	private GraphiteValidator validator = new GraphiteValidator();
+
+	
+	private String baseQueueName;
 
 	/**
 	 * The default constructor.
@@ -116,9 +119,15 @@ public final class DescriptorImpl extends BuildStepDescriptor<Publisher> impleme
 	@Override
 	public boolean configure(StaplerRequest req, JSONObject formData) {
 		servers.replaceBy(req.bindParametersToList(Server.class, "serverBinding."));
+		baseQueueName = formData.optString("baseQueueName", "");
 		save();
 		return true;
 	}
+
+public String getBaseQueueName(){
+		return baseQueueName;
+	}
+
 
 	/**
 	 * @param ip
@@ -187,5 +196,23 @@ public final class DescriptorImpl extends BuildStepDescriptor<Publisher> impleme
 		}
 
 		return FormValidation.ok("Port is correctly configured");
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public FormValidation doCheckBaseQueueName(@QueryParameter final String value) {
+	    if(!validator.isBaseQueueNamePresent(value)){
+	        return FormValidation.ok();
+	    }
+	    
+	    if(!validator.validateBaseQueueName(value)){
+	        return FormValidation.error("Please ");
+	    }
+	    
+	    return FormValidation.ok("Base queue name is correctly Configured");
+	    
 	}
 }

@@ -1,12 +1,16 @@
 package org.jenkinsci.plugins.graphiteIntegrator.metrics;
 
 import hudson.model.AbstractBuild;
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.UnknownHostException;
+
+import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.graphiteIntegrator.loggers.GraphiteLogger;
 import org.jenkinsci.plugins.graphiteIntegrator.Metric;
 import org.jenkinsci.plugins.graphiteIntegrator.Server;
+
 import utils.GraphiteValidator;
 
 /**
@@ -19,6 +23,7 @@ public abstract class AbstractMetric {
 	protected final AbstractBuild<?, ?> build;
 	protected final PrintStream logger;
 	protected final GraphiteLogger graphiteLogger;
+	protected final String baseQueueName;
 
 	/**
 	 * 
@@ -26,10 +31,11 @@ public abstract class AbstractMetric {
 	 * @param logger
 	 * @param graphiteLogger
 	 */
-	public AbstractMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger) {
+	public AbstractMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger, String baseQueueName) {
 		this.build = build;
 		this.logger = logger;
 		this.graphiteLogger = graphiteLogger;
+		this.baseQueueName = baseQueueName;
 	}
 
 	/**
@@ -41,26 +47,36 @@ public abstract class AbstractMetric {
 	 */
 	protected void sendMetric(Server server, Metric metric, String value) throws UnknownHostException,
 			IOException {
-		logger.println("Trying sending to  server : " + server.getIp() + ":" + server.getPort() + " On queue : "
+		logger.println("Trying to send metric to Graphite server : " + server.getIp() + ":" + server.getPort() + ", Metric name: " + metric.getName() +  " On queue : "
 				+ metric.getQueueName() + " With value : " + value);
 		if (server.getProtocol().equals("UDP")) {
-			logger.println("Metric " + value + " correctly sended to " + server.getIp() + ":" + server.getPort()
+			if (validator.isListening(server.getIp(), Integer.parseInt(server.getPort()))) {
+				graphiteLogger.logToGraphite(server.getIp(), server.getPort(), getCheckedBaseQueueName() + metric.getFullQueueAndName(), value.trim(), server.getProtocol());
+				logger.println("Metric: " + metric.getName() + " with value: "+ value + " correctly sent to " + server.getIp() + ":" + server.getPort()
 					+ " on " + metric.getQueueName() + "using UDP");
-			graphiteLogger.logToGraphite(server.getIp(), server.getPort(), metric.getQueueName(), value.trim(), server.getProtocol());
+			}
 		}
 		else if (server.getProtocol().equals("TCP")) {
 			if (validator.isListening(server.getIp(), Integer.parseInt(server.getPort()))) {
-				graphiteLogger.logToGraphite(server.getIp(), server.getPort(), metric.getQueueName(), value.trim(), server.getProtocol());
-
-				logger.println("Metric " + value + " correctly sended to " + server.getIp() + ":" + server.getIp()
-						+ " on " + metric.getQueueName());
-
+				graphiteLogger.logToGraphite(server.getIp(), server.getPort(),  getCheckedBaseQueueName() + metric.getFullQueueAndName(), value.trim(), server.getProtocol());
+				logger.println("Metric: " + metric.getName() + " with value: "+ value + " correctly sent to " + server.getIp() + ":" + server.getPort()
+					+ " on " + metric.getQueueName());
 			} else {
-				logger.println("Metric " + value + " failed when sended to " + server.getIp() + ":" + server.getIp()
-						+ " on " + metric.getQueueName());
-
+				logger.println("Metric: " + metric.getName() + " with value: "+ value + " failed when sent to " + server.getIp() + ":" + server.getPort()
+					+ " on " + metric.getQueueName());
 			}
 		}
+	}
+	
+	/**
+	 * Check if base queuename is null or whitespace and return empty, otherwise return the base queue name with a full stop appended
+	 * @return
+	 */
+	protected String getCheckedBaseQueueName(){
+	    if(StringUtils.isBlank(baseQueueName)){
+	        return "";
+	    }
+	    return baseQueueName.concat(".");
 	}
 
 	/**

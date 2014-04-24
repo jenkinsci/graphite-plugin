@@ -23,8 +23,8 @@ public class BuildFailedMetric extends AbstractMetric {
      * @param logger
      * @param graphiteLogger
      */
-    public BuildFailedMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger) {
-        super(build, logger, graphiteLogger);
+    public BuildFailedMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger, String baseQueueName) {
+        super(build, logger, graphiteLogger, baseQueueName);
     }
 
     /**

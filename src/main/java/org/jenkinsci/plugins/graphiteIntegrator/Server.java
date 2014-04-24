@@ -5,30 +5,28 @@
 package org.jenkinsci.plugins.graphiteIntegrator;
 
 /**
- *
+ * 
  * @author joachimrodrigues
  */
 public class Server {
 
-    
     String ip;
-    
+
     String port;
-    
+
     String description;
-    
+
     String protocol;
-            
 
     public String getProtocol() {
-		return protocol;
-	}
+        return protocol;
+    }
 
-	public void setProtocol(String protocol) {
-		this.protocol = protocol;
-	}
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
 
-	public String getIp() {
+    public String getIp() {
         return ip;
     }
 
@@ -51,7 +49,5 @@ public class Server {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
-}
 
+}

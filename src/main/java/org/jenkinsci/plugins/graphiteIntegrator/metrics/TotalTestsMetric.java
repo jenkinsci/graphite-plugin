@@ -4,9 +4,11 @@
 package org.jenkinsci.plugins.graphiteIntegrator.metrics;
 
 import hudson.model.AbstractBuild;
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.UnknownHostException;
+
 import org.jenkinsci.plugins.graphiteIntegrator.loggers.GraphiteLogger;
 import org.jenkinsci.plugins.graphiteIntegrator.Metric;
 import org.jenkinsci.plugins.graphiteIntegrator.Server;
@@ -23,8 +25,8 @@ public class TotalTestsMetric extends AbstractMetric {
 	 * @param logger
 	 * @param graphiteLogger
 	 */
-	public TotalTestsMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger) {
-		super(build, logger, graphiteLogger);
+	public TotalTestsMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger, String baseQueueName) {
+		super(build, logger, graphiteLogger, baseQueueName);
 	}
 
 	/**

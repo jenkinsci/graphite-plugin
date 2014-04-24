@@ -1,31 +1,31 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.jenkins-ci.plugins</groupId>
 		<artifactId>plugin</artifactId>
-		<version>1.509.1</version><!-- which version of Jenkins is this plugin 
+		<version>1.532.1</version><!-- which version of Jenkins is this plugin 
 			built against? -->
 	</parent>
-
 	<artifactId>graphiteIntegrator</artifactId>
 	<version>1.2-SNAPSHOT</version>
 	<packaging>hpi</packaging>
 	<url>https://wiki.jenkins-ci.org/display/JENKINS/Graphite-plugin</url>
-	
+
 	<developers>
 		<developer>
-		  <id>joachim_rodrigues</id>
-		  <name>joachim rodrigues</name>
-		  <email>rodrigues.joachim@gmail.com</email>
+			<id>joachim_rodrigues</id>
+			<name>joachim rodrigues</name>
+			<email>rodrigues.joachim@gmail.com</email>
 		</developer>
 	</developers>
-  
+
 	<scm>
-	    <connection>scm:git:ssh://github.com/jenkinsci/graphite-plugin.git</connection>
-	    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/graphite-plugin.git</developerConnection>
-	    <url>https://github.com/jenkinsci/graphite-plugin</url>
-  	</scm>
-  
+		<connection>scm:git:ssh://github.com/jenkinsci/graphite-plugin.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/jenkinsci/graphite-plugin.git</developerConnection>
+		<url>https://github.com/jenkinsci/graphite-plugin</url>
+	</scm>
+
 	<!-- get every artifact through repo.jenkins-ci.org, which proxies all the 
 		artifacts that we need -->
 	<build>
@@ -33,32 +33,33 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
-				  <goals>deploy</goals>
+					<goals>deploy</goals>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 	<repositories>
-          <repository>
-            <id>repo.jenkins-ci.org</id>
-            <url>http://repo.jenkins-ci.org/public/</url>
-          </repository>
-   	</repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>repo.jenkins-ci.org</id>
-            <url>http://repo.jenkins-ci.org/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
+		<repository>
+			<id>repo.jenkins-ci.org</id>
+			<url>http://repo.jenkins-ci.org/public/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>repo.jenkins-ci.org</id>
+			<url>http://repo.jenkins-ci.org/public/</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<dependencies>
 		<dependency>
@@ -69,14 +70,14 @@
 	</dependencies>
 
 	<distributionManagement>
-	    <repository>
-	      <id>maven.jenkins-ci.org</id>
-	      <url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url>
-	    </repository>
-  	</distributionManagement>
+		<repository>
+			<id>maven.jenkins-ci.org</id>
+			<url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url>
+		</repository>
+	</distributionManagement>
 
 	<properties>
-		
+
 		<maven-hpi-plugin.version>1.95</maven-hpi-plugin.version>
 	</properties>
 </project>
