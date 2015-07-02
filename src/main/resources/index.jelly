@@ -1,3 +1,4 @@
+<?jelly escape-by-default='true'?>
 <div>
   This plugin allows you to send these metrics : number of tests, tests skipped, tests failed, build duration, cobertura total line coverage 
   and cobertura total branch coverage to one or more graphite servers.

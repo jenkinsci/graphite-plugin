@@ -4,14 +4,15 @@
 package org.jenkinsci.plugins.graphiteIntegrator.metrics;
 
 import hudson.model.AbstractBuild;
+import hudson.tasks.test.AbstractTestResultAction;
 
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.UnknownHostException;
 
-import org.jenkinsci.plugins.graphiteIntegrator.loggers.GraphiteLogger;
 import org.jenkinsci.plugins.graphiteIntegrator.Metric;
 import org.jenkinsci.plugins.graphiteIntegrator.Server;
+import org.jenkinsci.plugins.graphiteIntegrator.loggers.GraphiteLogger;
 
 /**
  * 
@@ -19,28 +20,31 @@ import org.jenkinsci.plugins.graphiteIntegrator.Server;
  */
 public class TotalTestsMetric extends AbstractMetric {
 
-	/**
-	 * 
-	 * @param build
-	 * @param logger
-	 * @param graphiteLogger
-	 */
-	public TotalTestsMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger, String baseQueueName) {
-		super(build, logger, graphiteLogger, baseQueueName);
-	}
+    /**
+     * 
+     * @param build
+     * @param logger
+     * @param graphiteLogger
+     */
+    public TotalTestsMetric(AbstractBuild<?, ?> build, PrintStream logger, GraphiteLogger graphiteLogger, String baseQueueName) {
+        super(build, logger, graphiteLogger, baseQueueName);
+    }
 
-	/**
-	 * 
-	 * @param server
-	 * @param metric
-	 * @throws UnknownHostException
-	 * @throws IOException
-	 */
-	@Override
-	public void sendMetric(Server server, Metric... metric) throws UnknownHostException, IOException {
+    /**
+     * 
+     * @param server
+     * @param metric
+     * @throws UnknownHostException
+     * @throws IOException
+     */
+    @Override
+    public void sendMetric(Server server, Metric... metric) throws UnknownHostException, IOException {
+        final AbstractTestResultAction<?> testResult = build.getAction(AbstractTestResultAction.class);
 
-		String metricToSend = Integer.toString(build.getTestResultAction().getTotalCount());
+        if (testResult != null) {
+            final String metricToSend = Integer.toString(testResult.getTotalCount());
 
-		sendMetric(server, metric[0], metricToSend);
-	}
+            sendMetric(server, metric[0], metricToSend);
+        }
+    }
 }
