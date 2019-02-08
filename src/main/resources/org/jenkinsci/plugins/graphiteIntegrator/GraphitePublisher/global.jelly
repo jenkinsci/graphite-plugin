@@ -31,8 +31,8 @@
           
           <f:entry title="${%graphite_servers_adding_protocol}" field="protocol">
     			<select name="serverBinding.protocol">
-        			<option value="UDP">UDP</option>
-        			<option value="TCP">TCP</option>
+        			<option selected="${currentServer.protocol.equals('UDP')? 'true':null}" value="UDP">UDP</option>
+        			<option selected="${currentServer.protocol.equals('TCP')? 'true':null}" value="TCP">TCP</option>
         		</select>
 		  </f:entry>
 
